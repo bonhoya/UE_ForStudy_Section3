@@ -24,7 +24,22 @@ void AMovingObject::BeginPlay()
 void AMovingObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	MoveObject(DeltaTime);
+	RotateObject(DeltaTime);
+}
 
+float AMovingObject::GetDistanceMoved() const
+{
+	return FVector::Dist(StartLocation, GetActorLocation());
+}
+
+void AMovingObject::RotateObject(float DeltaTime)
+{
+	AddActorLocalRotation(RotationVelocity * DeltaTime);
+}
+
+void AMovingObject::MoveObject(float DeltaTime)
+{
 	if(GetDistanceMoved() > MoveDistance)
 	{
 		FVector MoveDirection = ObjectVelocity.GetSafeNormal();
@@ -39,9 +54,3 @@ void AMovingObject::Tick(float DeltaTime)
 		SetActorLocation(CurrentActorLocation);
 	}
 }
-
-float AMovingObject::GetDistanceMoved() const
-{
-	return FVector::Dist(StartLocation, GetActorLocation());
-}
-

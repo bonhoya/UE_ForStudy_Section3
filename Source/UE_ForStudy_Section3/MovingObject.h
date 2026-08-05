@@ -29,8 +29,13 @@ private:
 	UPROPERTY(EditAnyWhere, Category = "Moving")
 	float MoveDistance = 0;
 
+	UPROPERTY(EditAnyWhere, Category = "Rotation")
+	FRotator RotationVelocity;
+
 	FVector StartLocation;
 
 	float GetDistanceMoved() const;
 
+	void RotateObject(float DeltaTime);
+	void MoveObject(float DeltaTime);
 };
