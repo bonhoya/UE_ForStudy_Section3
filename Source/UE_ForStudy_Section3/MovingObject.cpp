@@ -15,6 +15,8 @@ AMovingObject::AMovingObject()
 void AMovingObject::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StartLocation = GetActorLocation();
 	
 }
 
@@ -23,5 +25,23 @@ void AMovingObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if(GetDistanceMoved() > MoveDistance)
+	{
+		FVector MoveDirection = ObjectVelocity.GetSafeNormal();
+		StartLocation = StartLocation + MoveDirection * MoveDistance;
+		SetActorLocation(StartLocation);
+		ObjectVelocity = -ObjectVelocity;
+	}
+	else
+	{
+		FVector CurrentActorLocation = GetActorLocation();
+		CurrentActorLocation = CurrentActorLocation + ObjectVelocity * DeltaTime;
+		SetActorLocation(CurrentActorLocation);
+	}
+}
+
+float AMovingObject::GetDistanceMoved() const
+{
+	return FVector::Dist(StartLocation, GetActorLocation());
 }
 
